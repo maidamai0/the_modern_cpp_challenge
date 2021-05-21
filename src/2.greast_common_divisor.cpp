@@ -1,8 +1,10 @@
 #include <algorithm>
 #include <cassert>
+#include <numeric>
 
 #include "doctest/doctest.h"
 #include "fmt/format.h"
+#include "utility.hpp"
 
 auto greatest_common_divisor(size_t a, size_t b) {
   // Euclid's algorithm,
@@ -21,14 +23,10 @@ auto greatest_common_divisor(size_t a, size_t b) {
   return a;
 }
 
-TEST_CASE("1,2") {
-  CHECK(greatest_common_divisor(1, 2) == 1);
-}
-
-TEST_CASE("4,2") {
-  CHECK(greatest_common_divisor(4, 2) == 2);
-}
-
-TEST_CASE("4,2") {
-  CHECK(greatest_common_divisor(47, 3) == 1);
+TEST_CASE(util::problem_name().data()) {
+  for (int i = 0; i < 10; i++) {
+    const auto a = util::random_integer();
+    const auto b = util::random_integer();
+    CHECK(greatest_common_divisor(a, b) == std::gcd(a, b));
+  }
 }

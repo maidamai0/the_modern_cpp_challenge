@@ -2,6 +2,7 @@
 
 #include "doctest/doctest.h"
 #include "fmt/format.h"
+#include "utility.hpp"
 
 auto sum_of_natuals(size_t limit) {
   size_t sum = 0;
@@ -16,18 +17,9 @@ auto sum_of_natuals(size_t limit) {
   return sum;
 }
 
-TEST_CASE("1") {
+TEST_CASE(util::problem_name().data()) {
   CHECK(sum_of_natuals(1) == 0);
-}
-
-TEST_CASE("3") {
   CHECK(sum_of_natuals(3) == 3);
-}
-
-TEST_CASE("5") {
   CHECK(sum_of_natuals(5) == (3 + 5));
-}
-
-TEST_CASE("15") {
   CHECK(sum_of_natuals(15) == (3 + 5 + 6 + 9 + 10 + 12 + 15));
 }

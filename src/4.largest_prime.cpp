@@ -2,6 +2,7 @@
 
 #include "doctest/doctest.h"
 #include "fmt/format.h"
+#include "utility.hpp"
 
 auto is_prime(size_t n) {
   if (n == 2 || n == 3) {
@@ -32,7 +33,7 @@ auto largest_prime(size_t n) {
   return n;
 }
 
-TEST_CASE("largest prime") {
+TEST_CASE(util::problem_name().data()) {
   CHECK(largest_prime(2) == 2);
   CHECK(largest_prime(3) == 3);
   CHECK(largest_prime(4) == 3);
