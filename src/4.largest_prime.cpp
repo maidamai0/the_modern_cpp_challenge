@@ -4,27 +4,9 @@
 #include "fmt/format.h"
 #include "utility.hpp"
 
-auto is_prime(size_t n) {
-  if (n == 2 || n == 3) {
-    return true;
-  } else if (n <= 1 || (n % 2) == 0 || (n % 3) == 0) {
-    return false;
-  }
-
-  int i = 5;
-  while (i * i <= n) {
-    if ((n % i) == 0 || (n % (i + 2)) == 0) {
-      return false;
-    }
-    i += 6;
-  }
-
-  return true;
-}
-
 auto largest_prime(size_t n) {
   for (size_t p = n; p > 1; p--) {
-    if (is_prime(p)) {
+    if (util::is_prime(p)) {
       fmt::print("largest prime under {} is {}\n", n, p);
       return p;
     }
