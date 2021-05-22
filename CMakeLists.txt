@@ -6,7 +6,9 @@ project(${ROOT} CXX)
 set(CMAKE_GENERATOR Ninja)
 
 # cpp compiler settings
-set(CMAKE_CXX_STANDARD 20)
+# clangd seems have some bugs on c++20, can't find std::stirng_view
+option(CXX_STD "C++ standard" 20)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
