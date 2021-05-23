@@ -1,5 +1,3 @@
-#include <vcruntime.h>
-
 #include <algorithm>
 #include <array>
 #include <initializer_list>
