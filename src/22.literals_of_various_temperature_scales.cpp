@@ -4,10 +4,38 @@
 #include "doctest/doctest.h"
 #include "utility.hpp"
 
+namespace temperature {
+class Temperature;
+namespace literals {
+struct quatity {
+  friend Temperature;
+  double value = 0.0;
+};
+class celsius : public quatity {};
+class kelvin : public quatity {};
+class fahrenheit : public quatity {};
+
+constexpr auto operator"" _cel(long double n) {
+  return celsius{static_cast<double>(n)};
+}
+
+auto operator"" _k(long double n) {
+  return kelvin{static_cast<double>(n)};
+}
+
+auto operator"" _f(long double n) {
+  return fahrenheit{static_cast<double>(n)};
+}
+}  // namespace literals
+
 class Temperature {
  public:
-  constexpr Temperature() = default;
-  explicit constexpr Temperature(const double celsius) : celsius_(celsius) {}
+  explicit constexpr Temperature(literals::celsius&& celsius)
+      : celsius_(celsius.value) {}
+  explicit constexpr Temperature(literals::fahrenheit&& fahrenheit)
+      : celsius_{(fahrenheit.value - 32) * 5 / 9} {}
+  explicit constexpr Temperature(literals::kelvin&& k)
+      : celsius_(k.value - 273.15) {}
 
   static Temperature from_fahrenheit(const double fahrenheit) {
     Temperature t;
@@ -36,24 +64,19 @@ class Temperature {
   }
 
  private:
+  Temperature() = default;
+
+ private:
   double celsius_ = 0.0;
 };
 
-constexpr auto operator"" _cel(long double n) {
-  return Temperature(n);
-}
-
-auto operator"" _f(long double n) {
-  return Temperature::from_fahrenheit(n);
-}
-
-auto operator"" _k(long double n) {
-  return Temperature::from_kelvin(n);
-}
+}  // namespace temperature
 
 TEST_CASE(util::problem_name().data()) {
   {
-    const auto temp = 32.0_cel;
+    using namespace temperature;
+    using namespace temperature::literals;
+    const auto temp = Temperature(32.0_cel);
     const auto temp_k = Temperature::from_kelvin(temp.kelvin());
     const auto temp_f = Temperature::from_fahrenheit(temp.fahrenheit());
     CHECK(temp == temp_k);
