@@ -1,6 +1,12 @@
+#include <algorithm>
 #include <array>
+#include <iomanip>
+#include <ios>
+#include <iterator>
+#include <sstream>
 #include <string>
 #include <tuple>
+#include <vector>
 
 #include "doctest/doctest.h"
 #include "fmt/format.h"
@@ -70,8 +76,33 @@ auto binary_to_string(Bytes... args) {
   return str;
 }
 
+namespace ios {
+template <typename Iterator>
+auto to_hex_str(Iterator begin, Iterator end, const bool upper_case = false) {
+  std::ostringstream ss;
+  if (upper_case) {
+    ss.setf(std::ios_base::uppercase);
+  }
+
+  while (begin != end) {
+    ss << std::hex << std::setw(2) << std::setfill('0')
+       << static_cast<int>(*begin);
+    begin++;
+  }
+  return ss.str();
+}
+
+template <typename C>
+auto binary_to_hex_str(C&& c, const bool upper_case = false) {
+  return to_hex_str(std::begin(c), std::end(c), upper_case);
+}
+}  // namespace ios
+
 TEST_CASE(util::problem_name().data()) {
   CHECK(binary_to_string(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
                          17) ==
+        std::string("0102030405060708090a0b0c0d0e0f1011"));
+  CHECK(ios::binary_to_hex_str(std::vector<int>{1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                                                11, 12, 13, 14, 15, 16, 17}) ==
         std::string("0102030405060708090a0b0c0d0e0f1011"));
 }
