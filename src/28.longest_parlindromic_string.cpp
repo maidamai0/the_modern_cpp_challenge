@@ -1,5 +1,3 @@
-#include <vcruntime.h>
-
 #include <string_view>
 
 #include "doctest/doctest.h"
