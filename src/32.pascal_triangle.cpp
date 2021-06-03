@@ -1,4 +1,3 @@
-#include <iomanip>
 #include <iostream>
 #include <utility>
 #include <vector>
@@ -7,6 +6,16 @@
 #include "fmt/format.h"
 #include "fmt/ranges.h"
 #include "utility.hpp"
+
+const auto digits(size_t n) {
+  int w = 0;
+  while (n) {
+    n /= 10;
+    w++;
+  }
+
+  return w;
+}
 
 auto pascal_triangle(size_t n) {
   std::vector<std::vector<size_t>> numbers(n);
@@ -25,12 +34,13 @@ auto pascal_triangle(size_t n) {
     }
     numbers[level - 1] = std::move(std::move(sub_numbers));
   }
+  const auto max_width = digits(max) * 2;
 
-  const auto len = n | 0x01;
+  const auto len = (n | 0x01) * max_width;
   for (size_t l = 0; l < n; ++l) {
-    std::cout << std::string(len - l, ' ');
+    std::cout << std::string((n - l - 1) * max_width / 2, ' ');
     for (const auto& c : numbers[l]) {
-      std::cout << c << " ";
+      std::cout << c << std::string(max_width - digits(c), ' ');
     }
     std::cout << '\n';
   }
