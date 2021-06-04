@@ -1,3 +1,4 @@
+#include <exception>
 #include <filesystem>
 
 #include "doctest/doctest.h"
@@ -7,7 +8,11 @@
 auto directory_size() {
   size_t size = 0;
   for (const auto& fs : std::filesystem::recursive_directory_iterator(std::filesystem::current_path())) {
-    size += fs.file_size();
+    try {
+      size += fs.file_size();
+    } catch (std::exception& e) {
+      fmt::print("exception:{}\n", e.what());
+    }
   }
 
   fmt::print("size of {} is ", std::filesystem::current_path().string());
